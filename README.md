@@ -1,5 +1,5 @@
 # nexus-aws
-Creates AWS code pipelines for your projects.
+Creates a simple AWS code pipeline for your projects.
 
 ## Reference Architecture
 TODO
@@ -11,3 +11,4 @@ TODO
 ## Usage
 1. Create a new Terraform workspace. The workspace name will be used in subsequent resources.
 2. Run Terraform Apply to create a CodeBuild project
+3. Copy buildspec.yml to the new project Git directory
