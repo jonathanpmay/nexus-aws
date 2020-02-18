@@ -49,7 +49,7 @@ EOF
 
 # Create the Codebuild Project
 resource "aws_codebuild_project" "cb_prj_nexus" {
-  name = "${terraform.workspace}"
+  name         = "${terraform.workspace}"
   service_role = "${aws_iam_role.iam_role_nexus.arn}" 
 
   artifacts {
@@ -58,8 +58,8 @@ resource "aws_codebuild_project" "cb_prj_nexus" {
 
   environment {
     compute_type = "BUILD_GENERAL1_SMALL"
-    image = "aws/codebuild/standard:3.0"
-    type = "LINUX_CONTAINER"
+    image        = "aws/codebuild/standard:3.0"
+    type         = "LINUX_CONTAINER"
 
     environment_variable {
       name  = "NEXUS_APP_NAME"
@@ -97,20 +97,21 @@ resource "aws_codebuild_webhook" "cb_webhook" {
 
   filter_group {
     filter {
-      type = "EVENT"
+      type    = "EVENT"
       pattern = "PUSH"
     }
     
     filter {
-      type = "HEAD_REF"
+      type    = "HEAD_REF"
       pattern = "master"
     }
   }
 }
 
 resource "aws_s3_bucket" "s3_bucket_app_tfstate" {
-  bucket ="${terraform.workspace}-tfbackend"
-  acl = "private"
+  bucket        = "${terraform.workspace}-tfbackend"
+  acl           = "private"
+  force_destroy = true
 
   server_side_encryption_configuration {
     rule {
