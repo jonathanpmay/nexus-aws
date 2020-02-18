@@ -111,4 +111,12 @@ resource "aws_codebuild_webhook" "cb_webhook" {
 resource "aws_s3_bucket" "s3_bucket_app_tfstate" {
   bucket ="${terraform.workspace}-tfbackend"
   acl = "private"
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
 }
