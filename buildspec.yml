@@ -1,0 +1,33 @@
+version: 0.2
+
+env:
+  variables:
+    #NEXUS_* are defined in the Nexus CodeBuild block
+    TF_BACKEND_S3_ENCRYPT: "true"
+    TF_VERSION: "0.12.20"
+
+phases:
+  pre_build:
+    commands:
+      # Print non-secure environment variables
+      - echo [+] Printing non-secure environment variables
+      - printenv | grep "TF_"
+      - printenv | grep "NEXUS_"
+      # Download Terraform
+      - wget -nv https://releases.hashicorp.com/terraform/$TF_VERSION/terraform_$TF_VERSION\_linux_amd64.zip
+      - unzip terraform_$TF_VERSION\_linux_amd64.zip -d /usr/local/bin
+
+  build:
+    commands:
+      # Terraform Init w/ backend config
+      - echo "[+] Terraform Init"
+      - terraform init -no-color -backend-config="bucket=$NEXUS_BUCKET" -backend-config="key=$NEXUS_APP_NAME.terraform.tfstate" -backend-config="encrypt=$TF_BACKEND_S3_ENCRYPT"
+      # Terraform Plan
+      - echo "[+] Terraform Plan"
+      - terraform plan -no-color -out=tfplan
+      # Terraform Apply
+      - echo "[+] Terraform Apply"
+      - terraform apply -no-color tfplan
+  post_build:
+    commands:
+      - echo No post-build commands to run
