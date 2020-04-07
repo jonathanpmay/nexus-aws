@@ -2,7 +2,7 @@
 Creates a simple AWS code pipeline for your projects.
 
 ## Reference Architecture
-![Reference Architecture](nexus_architecture.svg)
+TODO
 
 ## Prerequisites
 - Github repo with the target application code
